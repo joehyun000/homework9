@@ -146,10 +146,11 @@ void insertEdge(graphType* graph, int u, int v) {                    //간선을
         graph->adjList_H[u] = node;                                  // 그 인접리스트의 첫 노드는 새 노드(node)로 설정
     } else {                                                         //반대로 u에 해당하는 인접리스트가 비어있지 않으면
         graphNode* temp = graph->adjList_H[u];                       //temp 노드 = 인접 리스트의 노드(시작점) 임시로 설정
-        while (temp->link != NULL) {                                 //리스트의 끝에 도달할 때까지 반복
+        while (temp->link != NULL  && temp->link->vertex < v) {      //리스트의 끝에 도달할 때까지 반복
             temp = temp->link;
         }
-        temp->link = node;                                           //리스트의 끝에 새 노드를 연결 시킴
+        node->link = temp->link;                                     // 새 노드의 링크를 temp 노드의 다음 노드로 설정
+        temp->link = node;                                           // temp 노드의 다음 노드를 새 노드로 설정
     }
 }
 
