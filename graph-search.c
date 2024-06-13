@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_VERTEX 10
-#define TRUE 1
-#define FALSE 0
+#define TRUE 1                                 //1을 직관적으로 보이기 위해 TRUE로 정의
+#define FALSE 0                                //0을 직관적으로 보이기 위해 FALSE로 정의
 
 typedef struct graphNode {                     //인접 리스트의 노드를 구조체로 정의
     int vertex;
