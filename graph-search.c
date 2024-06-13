@@ -128,29 +128,30 @@ void insertVertex(graphType* graph, int v) {             //정점을 삽입하�
     graph->n++;                                          //정점 수 증가
 }
 
-void insertEdge(graphType* graph, int u, int v) {                    //간선을 삽입하는 함수
-    if (u < 0 || u >= MAX_VERTEX || v < 0 || v >= MAX_VERTEX) {      //정점 들이 0~9범위 사이에 있는지 여부 판단
+void insertEdge(graphType* graph, int u, int v) {                               // 간선을 삽입하는 함수
+    if (u < 0 || u >= MAX_VERTEX || v < 0 || v >= MAX_VERTEX) {                 // 정점 들이 0~9 범위 사이에 있는지 여부 판단
         printf("\n Vertex isn't included in Graph");
-        return;                                                      //제 범위에 없으면 종료
+        return;                                                                 // 범위에 없으면 종료
     } 
- 
-    graphNode* node = (graphNode*)malloc(sizeof(graphNode));         //새 노드인 node를 동적으로 할당 시킴
+
+    graphNode* node = (graphNode*)malloc(sizeof(graphNode));                    // 새 노드인 node를 동적으로 할당 시킴
     if (node == NULL) {
         printf("\n Allocation is failed");
         return;
     }
-    node->vertex = v;                                                //새 노드의 정점은 v로 설정
-    node->link = NULL;                                               //그 새 노드는 link로 연결하는 것이 없음
+    node->vertex = v;                                                           // 새 노드의 정점은 v로 설정
+    node->link = NULL;                                                          // 그 새 노드는 link로 연결하는 것이 없음
 
-    if (graph->adjList_H[u] == NULL) {                               //만약 u에 해당하는 인접리스트가 비어있으면
-        graph->adjList_H[u] = node;                                  // 그 인접리스트의 첫 노드는 새 노드(node)로 설정
-    } else {                                                         //반대로 u에 해당하는 인접리스트가 비어있지 않으면
-        graphNode* temp = graph->adjList_H[u];                       //temp 노드 = 인접 리스트의 노드(시작점) 임시로 설정
-        while (temp->link != NULL  && temp->link->vertex < v) {      //리스트의 끝에 도달할 때까지 반복
+    if (graph->adjList_H[u] == NULL || graph->adjList_H[u]->vertex > v) {        // 첫 번째 노드로 삽입해야 하는 경우
+        node->link = graph->adjList_H[u];                                        // 새 노드의 링크를 인접 리스트의 헤더로 설정
+        graph->adjList_H[u] = node;                                              // 새 노드를 헤더로 설정
+    } else {                                                                     // 그렇지 않으면 중간 위치에 삽입
+        graphNode* temp = graph->adjList_H[u];                                   // temp 노드 = 인접 리스트의 노드(시작점) 임시로 설정
+        while (temp->link != NULL && temp->link->vertex < v) {                   // 리스트의 끝에 도달할 때까지 반복
             temp = temp->link;
         }
-        node->link = temp->link;                                     // 새 노드의 링크를 temp 노드의 다음 노드로 설정
-        temp->link = node;                                           // temp 노드의 다음 노드를 새 노드로 설정
+        node->link = temp->link;                                                 // 새 노드의 링크를 temp 노드의 다음 노드로 설정
+        temp->link = node;                                                       // temp 노드의 다음 노드를 새 노드로 설정
     }
 }
 
